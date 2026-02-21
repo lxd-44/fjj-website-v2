@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sounds of Francis | Francis Jiu Jitsu</title>
+    <meta name="description" content="Original music crafted for the Francis Jiu-Jitsu community. From competition walkouts to Sunday rolling vibes.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sounds of Francis | Original Music">
+    <meta property="og:description" content="Fourteen tracks crafted for the mats. From competition walkouts to Sunday rolling sessions.">
+    <meta property="og:image" content="assets/covers/01-this-is-home.jpg">
+    <meta property="og:type" content="music.album">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#1A1A1A',
+                        ember: '#EC6433',
+                        'ember-glow': '#FF7A4D',
+                        'ember-dark': '#D4552A',
+                        paper: '#FAF8F5',
+                        stone: '#E8E4DE',
+                        ash: '#9A9590',
+                        charcoal: '#2D2D2D',
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+
+        /* ═══ GLASSMORPHISM ═══ */
+        .glass-nav {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .light .glass-nav {
+            background: rgba(250, 248, 245, 0.85);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+        }
+
+        .glass-player {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .light .glass-player {
+            background: rgba(255, 255, 255, 0.75);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* ═══ ANIMATIONS ═══ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes eq-bar {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        @keyframes float-bg {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 15px) scale(0.95); }
+        }
+        @keyframes pulse-load {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-fade-up { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+
+        /* ═══ TRACK CARD ═══ */
+        .track-card {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            outline: none;
+        }
+        .track-card:hover, .track-card:focus-visible {
+            transform: translateY(-4px);
+        }
+        .track-card:focus-visible {
+            outline: 2px solid #EC6433;
+            outline-offset: 4px;
+            border-radius: 16px;
+        }
+        .track-card:hover .cover-art,
+        .track-card:focus-visible .cover-art {
+            transform: scale(1.03);
+            box-shadow: 0 20px 60px -12px rgba(236, 100, 51, 0.25);
+        }
+        .track-card.active {
+            transform: translateY(-2px);
+        }
+        .track-card.active .cover-art {
+            box-shadow: 0 20px 60px -12px rgba(236, 100, 51, 0.35);
+            outline: 2px solid #EC6433;
+            outline-offset: 3px;
+        }
+        .cover-art {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ═══ PROGRESS BAR ═══ */
+        .progress-container {
+            position: relative;
+            height: 4px;
+            cursor: pointer;
+            transition: height 0.15s ease;
+            /* 44px touch target via padding */
+            padding: 20px 0;
+            margin: -20px 0;
+        }
+        .progress-container:hover,
+        .progress-container:active {
+            height: 6px;
+        }
+        .progress-track {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .light .progress-track {
+            background: rgba(0, 0, 0, 0.08);
+        }
+        .progress-bar {
+            height: 100%;
+            background: #EC6433;
+            border-radius: 999px;
+            width: 0%;
+            transition: none;
+        }
+        .progress-thumb {
+            position: absolute;
+            top: 50%;
+            width: 14px;
+            height: 14px;
+            background: #EC6433;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.15s ease;
+            box-shadow: 0 2px 8px rgba(236, 100, 51, 0.4);
+            z-index: 2;
+            left: 0%;
+        }
+        .progress-container:hover .progress-thumb,
+        .progress-container:active .progress-thumb {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .progress-container:hover .progress-track,
+        .progress-container:active .progress-track {
+            height: 6px;
+        }
+
+        /* ═══ VOLUME ═══ */
+        .volume-slider {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            cursor: pointer;
+        }
+        .light .volume-slider {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #EC6433;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(236, 100, 51, 0.3);
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #EC6433;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(236, 100, 51, 0.3);
+        }
+
+        /* ═══ EQ BARS ═══ */
+        .eq-bar {
+            width: 3px;
+            background: #EC6433;
+            border-radius: 999px;
+            animation: eq-bar 0.8s ease-in-out infinite;
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0s; height: 8px; }
+        .eq-bar:nth-child(2) { animation-delay: 0.15s; height: 14px; }
+        .eq-bar:nth-child(3) { animation-delay: 0.3s; height: 6px; }
+        .eq-bar:nth-child(4) { animation-delay: 0.45s; height: 12px; }
+        .eq-bars-paused .eq-bar { animation-play-state: paused; }
+
+        /* ═══ NOW PLAYING BG ═══ */
+        .now-playing-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .now-playing-bg .blur-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            animation: float-bg 20s ease-in-out infinite;
+        }
+        .light .now-playing-bg .blur-orb { opacity: 0.05; }
+
+        /* ═══ VARIANT TOGGLE ═══ */
+        .variant-btn { transition: all 0.3s ease; }
+        .variant-btn.active { background: #EC6433; color: white; }
+
+        /* ═══ BOTTOM PLAYER ═══ */
+        .bottom-player {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(100%);
+        }
+        .bottom-player.visible { transform: translateY(0); }
+
+        /* ═══ LOADING STATE ═══ */
+        .play-btn-loading { animation: pulse-load 1s ease-in-out infinite; pointer-events: none; }
+
+        /* ═══ NAV LINK ═══ */
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #EC6433;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        /* ═══ MOBILE MENU ═══ */
+        .mobile-menu { pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+        .mobile-menu.open { pointer-events: auto; opacity: 1; }
+
+        /* ═══ BTN ═══ */
+        .btn-primary { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 30px rgba(236, 100, 51, 0.3); }
+        .btn-primary:active { transform: scale(0.98); }
+
+        /* ═══ TAG PILLS ═══ */
+        .tag-pill {
+            background: rgba(255, 255, 255, 0.06);
+            color: #9A9590;
+        }
+        .light .tag-pill {
+            background: rgba(0, 0, 0, 0.05);
+            color: #6B6560;
+        }
+
+        /* ═══ AB GUIDE ═══ */
+        .ab-guide {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .light .ab-guide {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .light .ab-guide strong { color: #2D2D2D; }
+
+        /* ═══ SCROLLBAR ═══ */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 999px; }
+        .light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+
+<body class="bg-ink text-paper font-body min-h-screen">
+
+    <!-- Ambient Background -->
+    <div class="now-playing-bg" id="ambient-bg">
+        <div class="blur-orb" style="background: #EC6433; top: -200px; right: -100px;"></div>
+        <div class="blur-orb" style="background: #D4552A; bottom: -200px; left: -100px; animation-delay: -7s;"></div>
+    </div>
+
+    <!-- ═══ NAVIGATION ═══ -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="assets/fjj-logo-white.png" alt="Francis Jiu Jitsu" class="h-14 md:h-16 dark-logo">
+                    <img src="assets/fjj-logo-dark.png" alt="Francis Jiu Jitsu" class="h-14 md:h-16 light-logo hidden">
+                </a>
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="/" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">HOME</a>
+                    <a href="classes.html" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">CLASSES</a>
+                    <a href="schedule.html" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">SCHEDULE</a>
+                    <a href="about.html" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">ABOUT</a>
+                    <a href="faq.html" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">FAQ</a>
+                    <a href="contact.html" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">CONTACT</a>
+                    <a href="music.html" class="nav-link active font-display font-semibold text-sm tracking-wide text-ember">MUSIC</a>
+                    <a href="mood.html" class="nav-link font-display font-semibold text-sm tracking-wide hover:text-ember transition-colors">MOOD SHIFT</a>
+                </div>
+                <div class="flex items-center gap-3 md:gap-4">
+                    <button id="theme-toggle" class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Toggle theme">
+                        <svg class="w-5 h-5 sun-icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                        </svg>
+                        <svg class="w-5 h-5 moon-icon hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                        </svg>
+                    </button>
+                    <a href="https://tidycal.com/fjj" target="_blank" rel="noopener"
+                       class="btn-primary hidden sm:inline-flex items-center gap-2 bg-ember hover:bg-ember-glow text-white font-display font-bold text-sm px-5 py-2.5 rounded-xl">
+                        BOOK FREE TRIAL
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                    <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Open menu">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed inset-0 z-50 lg:hidden">
+        <div class="absolute inset-0 bg-ink/95 backdrop-blur-xl">
+            <div class="flex flex-col h-full p-6">
+                <div class="flex justify-end">
+                    <button id="mobile-menu-close" class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Close menu">
+                        <svg class="w-6 h-6 text-paper" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <nav class="flex-1 flex flex-col items-center justify-center gap-8">
+                    <a href="/" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">HOME</a>
+                    <a href="classes.html" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">CLASSES</a>
+                    <a href="schedule.html" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">SCHEDULE</a>
+                    <a href="about.html" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">ABOUT</a>
+                    <a href="faq.html" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">FAQ</a>
+                    <a href="contact.html" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">CONTACT</a>
+                    <a href="music.html" class="font-display font-black text-4xl text-ember">MUSIC</a>
+                    <a href="mood.html" class="font-display font-black text-4xl text-paper hover:text-ember transition-colors">MOOD SHIFT</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="relative pt-32 pb-12 md:pt-40 md:pb-16 px-4 sm:px-6 lg:px-8 z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="font-display font-semibold text-ember text-sm tracking-[0.2em] uppercase mb-4 animate-fade-up">
+                Original Music
+            </p>
+            <h1 class="font-display font-black text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 animate-fade-up" style="animation-delay: 0.1s">
+                Sounds of<br>
+                <span class="text-ember">Francis</span>
+            </h1>
+            <p class="font-body text-ash text-lg md:text-xl max-w-xl mx-auto leading-relaxed animate-fade-up" style="animation-delay: 0.2s">
+                Fourteen tracks crafted for the mats. From competition walkouts to Sunday rolling sessions.
+            </p>
+
+            <!-- A/B Version Guide -->
+            <div class="mt-10 animate-fade-up" style="animation-delay: 0.3s">
+                <div class="ab-guide inline-flex items-center gap-3 px-5 py-3 rounded-2xl">
+                    <div class="flex items-center gap-1 bg-white/[0.06] rounded-lg p-0.5 flex-shrink-0">
+                        <span class="px-2.5 py-1 rounded-md bg-ember text-white font-display font-semibold text-xs">A</span>
+                        <span class="px-2.5 py-1 rounded-md font-display font-semibold text-xs text-ash">B</span>
+                    </div>
+                    <p class="font-body text-ash text-sm text-left">
+                        Each track has two versions. Use the <strong class="text-paper font-semibold">A / B toggle</strong> in the player to compare and pick your favourite.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ TRACK GRID ═══ -->
+    <section class="relative z-10 px-4 sm:px-6 lg:px-8 pb-48">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8" id="track-grid">
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ BOTTOM PLAYER BAR ═══ -->
+    <div id="bottom-player" class="bottom-player fixed bottom-0 left-0 right-0 z-40 glass-player safe-area-bottom">
+
+        <!-- Progress (44px touch target via padding) -->
+        <div class="progress-container w-full" id="progress-container">
+            <div class="progress-track">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-thumb" id="progress-thumb"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-4">
+            <div class="flex items-center gap-3 md:gap-4">
+
+                <!-- Track Info -->
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="w-11 h-11 md:w-14 md:h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-lg">
+                        <img id="player-cover" src="" alt="Now playing album art" class="w-full h-full object-cover">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p id="player-title" class="font-display font-bold text-sm md:text-base truncate"></p>
+                        <div class="flex items-center gap-2">
+                            <p id="player-subtitle" class="font-body text-ash text-xs md:text-sm truncate"></p>
+                            <!-- Mobile time -->
+                            <span class="font-body text-ash text-[10px] tabular-nums flex-shrink-0 md:hidden">
+                                <span id="current-time-mobile">0:00</span>/<span id="duration-mobile">0:00</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center gap-1 md:gap-4">
+
+                    <!-- Prev -->
+                    <button onclick="prevTrack()" class="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Previous track">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9.195 18.44c1.25.713 2.805-.19 2.805-1.629v-2.34l6.945 3.968c1.25.714 2.805-.188 2.805-1.628V7.19c0-1.44-1.555-2.342-2.805-1.628L12 9.53V7.19c0-1.44-1.555-2.342-2.805-1.628l-7.108 4.061c-1.26.72-1.26 2.536 0 3.256l7.108 4.061z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Play/Pause -->
+                    <button id="play-btn" onclick="togglePlay()" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-ember hover:bg-ember-glow flex items-center justify-center transition-all shadow-lg shadow-ember/20 hover:shadow-ember/40 hover:scale-105 active:scale-95" aria-label="Play or pause">
+                        <!-- Play -->
+                        <svg id="play-icon" class="w-5 h-5 md:w-6 md:h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"/>
+                        </svg>
+                        <!-- Pause -->
+                        <svg id="pause-icon" class="w-5 h-5 md:w-6 md:h-6 text-white hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z" clip-rule="evenodd"/>
+                        </svg>
+                        <!-- Loading spinner -->
+                        <svg id="loading-icon" class="w-5 h-5 md:w-6 md:h-6 text-white hidden animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Next -->
+                    <button onclick="nextTrack()" class="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Next track">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14.805 5.56c-1.25-.714-2.805.189-2.805 1.628v2.34L5.055 5.56C3.805 4.846 2.25 5.748 2.25 7.188v9.624c0 1.44 1.555 2.342 2.805 1.628L12 14.47v2.34c0 1.44 1.555 2.342 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256l-7.108-4.061z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Variant Toggle -->
+                    <div class="flex items-center gap-0.5 bg-white/5 rounded-lg p-0.5 md:hidden ml-1">
+                        <button class="variant-btn active px-2 py-1 rounded-md font-display font-semibold text-[10px]" data-variant="A" onclick="switchVariant('A')">A</button>
+                        <button class="variant-btn px-2 py-1 rounded-md font-display font-semibold text-[10px] text-ash" data-variant="B" onclick="switchVariant('B')">B</button>
+                    </div>
+                </div>
+
+                <!-- Desktop: Time + Variant + Volume -->
+                <div class="hidden md:flex items-center gap-4 flex-shrink-0">
+                    <span class="font-body text-ash text-xs tabular-nums w-24 text-right">
+                        <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+                    </span>
+
+                    <!-- Variant Toggle -->
+                    <div class="flex items-center gap-1 bg-white/5 rounded-lg p-0.5">
+                        <button class="variant-btn active px-2.5 py-1 rounded-md font-display font-semibold text-xs" data-variant="A" onclick="switchVariant('A')">A</button>
+                        <button class="variant-btn px-2.5 py-1 rounded-md font-display font-semibold text-xs text-ash" data-variant="B" onclick="switchVariant('B')">B</button>
+                    </div>
+
+                    <!-- Volume -->
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-ash" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                        </svg>
+                        <input type="range" min="0" max="1" step="0.01" value="0.8" class="volume-slider" id="volume-slider" oninput="setVolume(this.value)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Audio -->
+    <audio id="audio-player" preload="metadata"></audio>
+
+    <!-- ═══ JAVASCRIPT ═══ -->
+    <script>
+    // ── Track Data ──
+    const tracks = [
+        {
+            id: 1, title: 'This Is Home', subtitle: 'Cinematic Hip-Hop',
+            description: 'Epic orchestral anthem for brand videos and promos',
+            cover: 'assets/covers/01-this-is-home.jpg',
+            audioA: 'assets/audio/01-This-Is-Home-Cinematic-A.mp3',
+            audioB: 'assets/audio/01-This-Is-Home-Cinematic-B.mp3',
+            tags: ['Brand', 'Cinematic'], duration: '2:13'
+        },
+        {
+            id: 2, title: 'This Is Home', subtitle: 'Aussie Hip-Hop Edition',
+            description: 'Hilltop Hoods energy for local community content',
+            cover: 'assets/covers/02-this-is-home-aussie.jpg',
+            audioA: 'assets/audio/02-This-Is-Home-Aussie-A.mp3',
+            audioB: 'assets/audio/02-This-Is-Home-Aussie-B.mp3',
+            tags: ['Community', 'Reels'], duration: '2:00'
+        },
+        {
+            id: 3, title: 'Lotus From Stone', subtitle: 'Zen Boom Bap',
+            description: 'Third eye philosophy meets clever lyricism',
+            cover: 'assets/covers/03-lotus-from-stone.jpg',
+            audioA: 'assets/audio/03-Lotus-From-Stone-A.mp3',
+            audioB: 'assets/audio/03-Lotus-From-Stone-B.mp3',
+            tags: ['Zen', 'Training'], duration: '2:30'
+        },
+        {
+            id: 4, title: 'Midnight Monks', subtitle: 'Dark Introspective',
+            description: 'Noir vibes for late-night training montages',
+            cover: 'assets/covers/04-midnight-monks.jpg',
+            audioA: 'assets/audio/04-Midnight-Monks-A.mp3',
+            audioB: 'assets/audio/04-Midnight-Monks-B.mp3',
+            tags: ['Moody', 'Montage'], duration: '2:05'
+        },
+        {
+            id: 5, title: 'Golden Hour Rolling', subtitle: 'Soulful Sunday',
+            description: 'Warm J Dilla vibes for open mat and family class',
+            cover: 'assets/covers/05-golden-hour.jpg',
+            audioA: 'assets/audio/05-Golden-Hour-Rolling-A.mp3',
+            audioB: 'assets/audio/05-Golden-Hour-Rolling-B.mp3',
+            tags: ['Soulful', 'Open Mat'], duration: '2:20'
+        },
+        {
+            id: 6, title: 'Gentle Fury', subtitle: 'Competition Anthem',
+            description: 'Stadium walkout energy for highlight reels',
+            cover: 'assets/covers/06-gentle-fury.jpg',
+            audioA: 'assets/audio/06-Gentle-Fury-A.mp3',
+            audioB: 'assets/audio/06-Gentle-Fury-B.mp3',
+            tags: ['Competition', 'Walkout'], duration: '2:13'
+        },
+        {
+            id: 7, title: 'Templo', subtitle: 'Bad Bunny Reggaeton',
+            description: 'Bilingual Latin trap with international appeal',
+            cover: 'assets/covers/07-templo.jpg',
+            audioA: 'assets/audio/07-Templo-Bad-Bunny-A.mp3',
+            audioB: 'assets/audio/07-Templo-Bad-Bunny-B.mp3',
+            tags: ['Latin', 'Reels'], duration: '2:05'
+        },
+        {
+            id: 8, title: 'Show Up', subtitle: 'Motivational Boom Bap',
+            description: 'Your only opponent is who you were yesterday',
+            cover: 'assets/covers/08-show-up.jpg',
+            audioA: 'assets/audio/08-Show-Up-A.mp3',
+            audioB: 'assets/audio/08-Show-Up-B.mp3',
+            tags: ['Motivational', 'Retention'], duration: '3:02'
+        },
+        {
+            id: 9, title: 'Iron Sharpens Iron', subtitle: 'UK Rap / Storytelling',
+            description: 'Every scar a scripture, every bruise a blessing',
+            cover: 'assets/covers/09-iron-sharpens-iron.jpg',
+            audioA: 'assets/audio/09-Iron-Sharpens-Iron-A.mp3',
+            audioB: 'assets/audio/09-Iron-Sharpens-Iron-B.mp3',
+            tags: ['Emotional', 'Brotherhood'], duration: '3:13'
+        },
+        {
+            id: 10, title: 'Little Warriors', subtitle: 'Kids Class Anthem',
+            description: 'Tiny warriors learning big lessons on the mats',
+            cover: 'assets/covers/10-little-warriors.jpg',
+            audioA: 'assets/audio/10-Little-Warriors-A.mp3',
+            audioB: 'assets/audio/10-Little-Warriors-B.mp3',
+            tags: ['Kids', 'Fun'], duration: '2:06'
+        },
+        {
+            id: 11, title: 'One Mat Every Flag', subtitle: 'Afrobeats / Grime Fusion',
+            description: 'Different roots but same soil, different clouds but same rain',
+            cover: 'assets/covers/11-one-mat-every-flag.jpg',
+            audioA: 'assets/audio/11-One-Mat-Every-Flag-A.mp3',
+            audioB: 'assets/audio/11-One-Mat-Every-Flag-B.mp3',
+            tags: ['Cultural', 'Unity'], duration: '3:06'
+        },
+        {
+            id: 12, title: 'Nugget Warriors', subtitle: 'Chicken Nugget Remix',
+            description: 'Little Warriors parody — post-training chicken nugget anthem',
+            cover: 'assets/covers/12-nugget-warriors.jpg',
+            audioA: 'assets/audio/12-Nugget-Warriors-A.mp3',
+            audioB: 'assets/audio/12-Nugget-Warriors-B.mp3',
+            tags: ['Kids', 'Comedy'], duration: '2:15'
+        },
+        {
+            id: 17, title: 'The Professor', subtitle: 'Cinematic Aggressive Hip-Hop',
+            description: 'Bespoke walkout anthem — God help the other man',
+            cover: 'assets/covers/17-the-professor.jpg',
+            audioA: 'https://musicfile.kie.ai/YTAxZjRjNjMtYjM3Yi00MGM3LTk1NWUtNjg3Mjk4YTEyZjQ2',
+            audioB: 'https://musicfile.kie.ai/OGZlNjkzNTQtZDY5Ny00MGQzLWI5NWItMDIzZTU2ODdiMDNi',
+            tags: ['Walkout', 'Professor'], duration: '2:27'
+        },
+        {
+            id: 18, title: 'The Last Mohican (Francis Forever)', subtitle: 'Epic Orchestral',
+            description: 'Mohicans-inspired legacy anthem — the last of his kind, not the last of his legacy',
+            cover: 'assets/covers/18-the-last-mohican.jpg',
+            audioA: 'https://musicfile.kie.ai/Y2E4MWUzNGItNGFmMC00YTIxLWExMzMtYTU5NmFhN2JmOTJk',
+            audioB: 'https://musicfile.kie.ai/NThjZGNjNDAtMTlhYy00MTZhLWJhYWItMWY2YjdkOTM4MGVh',
+            tags: ['Walkout', 'Legacy'], duration: '3:00'
+        }
+    ];
+
+    // ── State ──
+    let currentTrackIndex = -1;
+    let currentVariant = 'A';
+    let isPlaying = false;
+    let isLoading = false;
+    const audio = document.getElementById('audio-player');
+
+    // ── Render Track Grid ──
+    function renderTracks() {
+        const grid = document.getElementById('track-grid');
+        grid.innerHTML = tracks.map((track, i) => `
+            <div class="track-card group animate-fade-up" style="animation-delay: ${0.05 + i * 0.06}s"
+                 onclick="loadTrack(${i})" data-index="${i}"
+                 tabindex="0" role="button"
+                 aria-label="Play ${track.title} - ${track.subtitle}"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadTrack(${i})}">
+                <div class="relative mb-3 md:mb-4">
+                    <div class="cover-art aspect-square rounded-xl md:rounded-2xl overflow-hidden shadow-xl">
+                        <img src="${track.cover}" alt="${track.title} - ${track.subtitle} album art" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <!-- Hover play overlay -->
+                    <div class="absolute inset-0 rounded-xl md:rounded-2xl bg-black/0 group-hover:bg-black/20 group-focus-visible:bg-black/20 transition-colors flex items-center justify-center">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-ember/90 flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all transform scale-75 group-hover:scale-100 group-focus-visible:scale-100 shadow-2xl">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Duration badge -->
+                    <div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-md">
+                        <span class="font-body text-white text-[10px] md:text-xs tabular-nums">${track.duration}</span>
+                    </div>
+                    <!-- EQ indicator -->
+                    <div class="eq-indicator absolute bottom-2 left-2 hidden items-end gap-0.5 h-4 bg-black/50 backdrop-blur-sm px-1.5 py-1 rounded-md" data-eq="${i}">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
+                <div class="px-0.5 md:px-1">
+                    <h3 class="font-display font-bold text-sm md:text-base truncate">${track.title}</h3>
+                    <p class="font-body text-ash text-xs md:text-sm mt-0.5 truncate">${track.subtitle}</p>
+                    <div class="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3">
+                        ${track.tags.map(t => `<span class="tag-pill font-display text-[9px] md:text-[10px] font-semibold tracking-wider uppercase px-2 md:px-2.5 py-0.5 md:py-1 rounded-full">${t}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ── Load & Play ──
+    function loadTrack(index) {
+        const sameTrack = currentTrackIndex === index;
+
+        if (sameTrack && !isLoading) {
+            togglePlay();
+            return;
+        }
+
+        currentTrackIndex = index;
+        const track = tracks[index];
+        const src = currentVariant === 'A' ? track.audioA : track.audioB;
+
+        // Show loading state
+        setLoadingState(true);
+
+        audio.src = src;
+        audio.load();
+
+        // Update player UI
+        const cover = document.getElementById('player-cover');
+        cover.src = track.cover;
+        cover.alt = `${track.title} - ${track.subtitle} album art`;
+        document.getElementById('player-title').textContent = track.title;
+        document.getElementById('player-subtitle').textContent = track.subtitle;
+
+        // Show player bar
+        document.getElementById('bottom-player').classList.add('visible');
+
+        // Update active card styling
+        document.querySelectorAll('.track-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.eq-indicator').forEach(e => { e.classList.add('hidden'); e.classList.remove('flex'); });
+
+        const activeCard = document.querySelector(`[data-index="${index}"]`);
+        if (activeCard) activeCard.classList.add('active');
+
+        const eq = document.querySelector(`[data-eq="${index}"]`);
+        if (eq) { eq.classList.remove('hidden'); eq.classList.add('flex'); }
+
+        // Update MediaSession
+        updateMediaSession(track);
+
+        audio.play().then(() => {
+            setLoadingState(false);
+        }).catch(() => {
+            setLoadingState(false);
+        });
+    }
+
+    function setLoadingState(loading) {
+        isLoading = loading;
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const loadingIcon = document.getElementById('loading-icon');
+
+        if (loading) {
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.add('hidden');
+            loadingIcon.classList.remove('hidden');
+        } else {
+            loadingIcon.classList.add('hidden');
+            updatePlayButton();
+        }
+    }
+
+    function togglePlay() {
+        if (currentTrackIndex === -1 || isLoading) return;
+        if (audio.paused) {
+            audio.play().catch(() => {});
+        } else {
+            audio.pause();
+        }
+    }
+
+    // Use audio events as source of truth for play state
+    audio.addEventListener('play', () => {
+        isPlaying = true;
+        updatePlayButton();
+    });
+    audio.addEventListener('pause', () => {
+        isPlaying = false;
+        updatePlayButton();
+    });
+
+    function updatePlayButton() {
+        document.getElementById('play-icon').classList.toggle('hidden', isPlaying);
+        document.getElementById('pause-icon').classList.toggle('hidden', !isPlaying);
+        document.getElementById('loading-icon').classList.add('hidden');
+
+        document.querySelectorAll('.eq-indicator').forEach(e => {
+            e.classList.toggle('eq-bars-paused', !isPlaying);
+        });
+    }
+
+    function nextTrack() {
+        if (currentTrackIndex === -1) { loadTrack(0); return; }
+        loadTrack((currentTrackIndex + 1) % tracks.length);
+    }
+
+    function prevTrack() {
+        if (currentTrackIndex === -1) return;
+        if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+        loadTrack((currentTrackIndex - 1 + tracks.length) % tracks.length);
+    }
+
+    function switchVariant(v) {
+        currentVariant = v;
+        document.querySelectorAll('.variant-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.variant === v);
+            b.classList.toggle('text-ash', b.dataset.variant !== v);
+        });
+        if (currentTrackIndex >= 0) {
+            const wasPlaying = isPlaying;
+            const seekTo = audio.currentTime;
+            const track = tracks[currentTrackIndex];
+            audio.src = v === 'A' ? track.audioA : track.audioB;
+
+            // Wait for metadata to load before seeking
+            const onLoaded = () => {
+                audio.currentTime = Math.min(seekTo, audio.duration);
+                if (wasPlaying) audio.play().catch(() => {});
+                audio.removeEventListener('loadedmetadata', onLoaded);
+            };
+            audio.addEventListener('loadedmetadata', onLoaded);
+            audio.load();
+        }
+    }
+
+    function setVolume(v) { audio.volume = v; }
+
+    // ── Progress ──
+    audio.addEventListener('timeupdate', () => {
+        if (!audio.duration) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        document.getElementById('progress-bar').style.width = pct + '%';
+        document.getElementById('progress-thumb').style.left = pct + '%';
+        const timeStr = formatTime(audio.currentTime);
+        document.getElementById('current-time').textContent = timeStr;
+        document.getElementById('current-time-mobile').textContent = timeStr;
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+        const durStr = formatTime(audio.duration);
+        document.getElementById('duration').textContent = durStr;
+        document.getElementById('duration-mobile').textContent = durStr;
+    });
+
+    audio.addEventListener('ended', () => nextTrack());
+
+    // Seek (works with touch and click)
+    const progressContainer = document.getElementById('progress-container');
+    function seekFromEvent(e) {
+        if (!audio.duration) return;
+        const rect = progressContainer.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        audio.currentTime = pct * audio.duration;
+    }
+    progressContainer.addEventListener('click', seekFromEvent);
+    progressContainer.addEventListener('touchstart', seekFromEvent, { passive: true });
+
+    function formatTime(s) {
+        if (!s || isNaN(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return `${m}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    // ── MediaSession API ──
+    function updateMediaSession(track) {
+        if (!('mediaSession' in navigator)) return;
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: track.title,
+            artist: 'Francis Jiu-Jitsu',
+            album: 'Sounds of Francis',
+            artwork: [{ src: track.cover, sizes: '512x512', type: 'image/jpeg' }]
+        });
+        navigator.mediaSession.setActionHandler('play', () => togglePlay());
+        navigator.mediaSession.setActionHandler('pause', () => togglePlay());
+        navigator.mediaSession.setActionHandler('previoustrack', () => prevTrack());
+        navigator.mediaSession.setActionHandler('nexttrack', () => nextTrack());
+    }
+
+    // ── Theme ──
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('fjj-theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('fjj-theme', next);
+    });
+
+    function applyTheme(theme) {
+        const isLight = theme === 'light';
+        document.documentElement.classList.toggle('light', isLight);
+        document.body.classList.toggle('bg-ink', !isLight);
+        document.body.classList.toggle('text-paper', !isLight);
+        document.body.classList.toggle('bg-paper', isLight);
+        document.body.classList.toggle('text-ink', isLight);
+        document.querySelector('.sun-icon').classList.toggle('hidden', isLight);
+        document.querySelector('.moon-icon').classList.toggle('hidden', !isLight);
+        document.querySelector('.dark-logo').classList.toggle('hidden', isLight);
+        document.querySelector('.light-logo').classList.toggle('hidden', !isLight);
+    }
+
+    // ── Mobile Menu ──
+    const mobileMenu = document.getElementById('mobile-menu');
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+        mobileMenu.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('mobile-menu-close').addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+
+    // ── Keyboard ──
+    document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); togglePlay(); }
+        if (e.code === 'ArrowRight') nextTrack();
+        if (e.code === 'ArrowLeft') prevTrack();
+    });
+
+    // ── Init ──
+    audio.volume = 0.8;
+    renderTracks();
+    </script>
+
+</body>
+</html>
