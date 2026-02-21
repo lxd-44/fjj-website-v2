@@ -80,20 +80,34 @@
         }
 
         /* Nav */
-        #nav { transition: background 0.4s cubic-bezier(.4,0,.2,1), border-color 0.4s cubic-bezier(.4,0,.2,1); }
+        #nav {
+            transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
         .nav-scrolled {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         #nav.nav-scrolled a:not(.cta-btn) { color: rgba(17,17,17,0.5); }
         #nav.nav-scrolled a:not(.cta-btn):hover { color: #111111; }
         #nav.nav-scrolled #menuBtn { color: #111111; }
         #nav.nav-scrolled .logo-white { opacity: 0; }
         #nav.nav-scrolled .logo-dark { opacity: 1; }
-        .logo-dark { position: absolute; opacity: 0; transition: opacity 0.3s ease; }
-        .logo-white { transition: opacity 0.3s ease; }
+        /* Both logos stacked in same space — no layout shift on crossfade */
+        .logo-wrap { position: relative; display: flex; align-items: center; }
+        .logo-white, .logo-dark {
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .logo-dark {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            object-fit: contain;
+            object-position: left center;
+        }
 
         /* Schedule tab active state */
         .schedule-tab.active {
@@ -327,7 +341,7 @@
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
         <!-- Logo -->
-        <a href="#hero" class="flex-shrink-0 relative">
+        <a href="#hero" class="flex-shrink-0 logo-wrap">
             <img src="assets/fjj-logo-white.png" alt="Francis Jiu Jitsu" class="logo-white h-10 lg:h-12 w-auto">
             <img src="assets/fjj-logo-dark.png" alt="Francis Jiu Jitsu" class="logo-dark h-10 lg:h-12 w-auto">
         </a>
